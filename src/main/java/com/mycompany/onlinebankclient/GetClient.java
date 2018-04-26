@@ -6,21 +6,45 @@
 package com.mycompany.onlinebankclient;
 
 /**
- *
- * @author eithn
+ * Client program to test out the api of the onlinebank server from aspect of
+ * customer and account display and add new account requests..
+ * @authors Eithne O'Sullivan -	17132185, Aaron Pope - 13100106, Kenneth Byrne -
+ * 17132410, Jemma McCreesh - 16144457 * 
+ * @date 18th April 18
  */
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import java.io.IOException;
 import javax.ws.rs.core.MediaType;
 
 public class GetClient {
 
     public static void main(String[] args) {
         int port = 49000;
-        String getUrl = "http://localhost:" + port + "/api/customers/1";
+        String apiID = "35c4f3863a0d5efc60708589be6b12c5";
+        String customerID = "1";
+        
+        String getUrl = "http://localhost:" + port + "/api/customers/" + apiID + "/" + customerID;
+        
+        // NOTE: Server keeps restarting after theis client is started. It may or may not
+        // the following requests in before that happens. Aim was to add in code 
+        // accept input from user to select customer number and accoun , but this gave 
+        // the server time to auto-restart so have stuch with fixed number inputs
+        // for the tests.
+
+//        System.out.println("\nEnter customer number as 1 or 2,3,4,5");
+//        
+//        Scanner keyboard;
+//        keyboard = new Scanner(System.in);
+//        
+//        String input = keyboard.nextLine();
+//        getUrl = getUrl + "/" + input;
+        
+        
         Client client = Client.create();
+        
+        
+
         WebResource target = client.resource(getUrl);
         ClientResponse response = target
                 .type(MediaType.APPLICATION_JSON_TYPE)
@@ -37,14 +61,16 @@ public class GetClient {
         ClientResponse response2 = targetAccs
                 .type(MediaType.APPLICATION_JSON_TYPE)
                 .get(ClientResponse.class);
-        
+
         System.out.println("\n Customer 1, accounts:");
         System.out.println(response2.getEntity(String.class));
 
         // --------------------------------------------------------//
         // inspiration for following line of code taken from:
         // https://jersey.github.io/documentation/latest/client.html
-        WebResource targetAccX = targetAccs.path("/1");
+        String accountID = "1";
+        String p1 = "/" + accountID;
+        WebResource targetAccX = targetAccs.path(p1);
 
         ClientResponse response3 = targetAccX
                 .type(MediaType.APPLICATION_JSON_TYPE)
@@ -58,8 +84,9 @@ public class GetClient {
         // error to get success:
         // https://stackoverflow.com/questions/10335483/how-do-i-post-a-pojo-with-jersey-client-without-manually-convert-to-json
         
-        Account a1 = new Account(1, 708091, 1234550, "current");
         
+        Account a1 = new Account(1, 708091, 1234550, "current");
+
         ClientResponse response4 = targetAccs
                 .type(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON)
@@ -71,7 +98,10 @@ public class GetClient {
         // --------------------------------------------------------//
         // inspiration for following line of code taken from:
         // https://jersey.github.io/documentation/latest/client.html
-        WebResource targetAcc2 = targetAccs.path("/2");
+        
+        String accountID2 = "2";
+        String p2 = "/" + accountID2;
+        WebResource targetAcc2 = targetAccs.path(p2);
 
         ClientResponse response5 = targetAcc2
                 .type(MediaType.APPLICATION_JSON_TYPE)
@@ -81,18 +111,13 @@ public class GetClient {
         System.out.println(response5.getEntity(String.class));
 
         // --------------------------------------------------------//
-        
         ClientResponse response6 = targetAccs
                 .type(MediaType.APPLICATION_JSON_TYPE)
                 .get(ClientResponse.class);
-        
+
         System.out.println("\n Customer 1, accounts:");
         System.out.println(response6.getEntity(String.class));
 
         // --------------------------------------------------------//
-
-
-        
-
     }
 }
