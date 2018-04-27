@@ -8,6 +8,7 @@ package com.mycompany.onlinebankclient;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import java.util.Date;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -37,27 +38,36 @@ public class TransactionClient {
 // --------------------------------------------------------//
             // inspiration for following line of code taken from:
             // https://jersey.github.io/documentation/latest/client.html
+            
             String accountID = "1";
-            String p1 = "/" + accountID;
+           
+            String p1 = "/" + accountID + "/transactions";
             
             WebResource targetAcc1 = target.path(p1);
+   
+        // lodgement transaction//
+            Transaction a1 = new  Transaction(1, 1, "credit", new Date(), 20.00, 0.00, "lodgement");
+           
 
             ClientResponse response1 = targetAcc1
-                    .queryParam("transaction", "1")
-                    .queryParam("amount", "20.00")
                     .type(MediaType.APPLICATION_JSON_TYPE)
-                    .post(ClientResponse.class);
+                    .accept(MediaType.APPLICATION_JSON)
+                    .post(ClientResponse.class, a1);
 
             System.out.println("\n Customer 1, account 1, lodgement:");
             System.out.println(response1.getEntity(String.class));
 
             // --------------------------------------------------------//
-            ClientResponse response3 = targetAcc1
+        // get account 1//
+        
+            String p2 = "/" + accountID;
+            WebResource targetAcc2 = target.path(p2);
+            ClientResponse response3 = targetAcc2
                     .type(MediaType.APPLICATION_JSON_TYPE)
                     .get(ClientResponse.class);
 
             System.out.println("\n Customer 1, account 1:");
-//            System.out.println(response3.getEntity(String.class));
+//             System.out.println(response3.getEntity(String.class));
 
             Account acc1 = response3.getEntity(Account.class);
 
@@ -65,40 +75,65 @@ public class TransactionClient {
             // -----------------------------------------------------//
             // Server keeps restarting so updates get lost.
 
+        // withdrawal transaction // 
+        
             double amount = 20.00;
 
             if (acc1.getCurrentBalance() >= amount) {
 
-                ClientResponse response4 = targetAcc1
-                        .queryParam("transaction", "3")
-                        .queryParam("amount", "20.00")
-                        .type(MediaType.APPLICATION_JSON_TYPE)
-                        .post(ClientResponse.class);
+            Transaction a3 = new  Transaction(1,3, "debit", new Date(), 20.00, 0.00, "withdrawal");
+           
 
+            ClientResponse response5 = targetAcc1
+                    .type(MediaType.APPLICATION_JSON_TYPE)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .post(ClientResponse.class, a3);
+            
                 System.out.println("\n Customer 1, account 1, withdrawal:");
-                System.out.println(response4.getEntity(String.class));
+                System.out.println(response5.getEntity(String.class));
 
                 // --------------------------------------------------------//
             }
 
-            ClientResponse response5 = targetAcc1
-                    .queryParam("transaction", "2")
-                    .queryParam("amount", "50.00")
-                    .type(MediaType.APPLICATION_JSON_TYPE)
-                    .post(ClientResponse.class);
+        // transferal transaction //
+            
+            Transaction a2 = new  Transaction(1,2, "credit", new Date(), 20.00, 0.00, "transferal");
 
-            System.out.println("\n Customer 1, account 1, transferal:");
-            System.out.println(response5.getEntity(String.class));
-
-            // --------------------------------------------------------//
             ClientResponse response6 = targetAcc1
                     .type(MediaType.APPLICATION_JSON_TYPE)
-                    .get(ClientResponse.class);
+                    .accept(MediaType.APPLICATION_JSON)
+                    .post(ClientResponse.class, a2);
 
-            System.out.println("\n Customer 1, account 1:");
+            System.out.println("\n Customer 1, account 1, transferal:");
             System.out.println(response6.getEntity(String.class));
 
-            // -----------------------------------------------------//
+             // -----------------------------------------------------//
+           
+        // transactions list//
+             
+             ClientResponse response7 = target
+                    .type(MediaType.APPLICATION_JSON_TYPE)
+                    .get(ClientResponse.class);
+            
+            System.out.println("\n Customer 1, account 1, transactions:");
+            System.out.println(response7.getEntity(String.class));
+
+//            // -----------------------------------------------------//
+
+            // transaction 1/
+            
+            String p3 = "/" + "1";
+            
+            WebResource targetAcc3 = targetAcc1.path(p3);
+            
+            ClientResponse response8 = targetAcc3
+                    .type(MediaType.APPLICATION_JSON_TYPE)
+                    .get(ClientResponse.class);
+            
+            System.out.println("\n Customer 1, account 1, transaction 1:");
+            System.out.println(response8.getEntity(String.class));
+
+//            // -----------------------------------------------------//
         } catch (Exception e) {
             System.out.println("Client error: " + e);
         }
