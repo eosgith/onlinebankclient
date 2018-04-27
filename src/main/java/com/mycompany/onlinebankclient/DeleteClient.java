@@ -34,8 +34,8 @@ public class DeleteClient {
 
             WebResource targetAcc1 = target.path(p1);
             
-            ClientResponse response4 = targetAcc1
-                    .type(MediaType.APPLICATION_JSON_TYPE)
+             ClientResponse response4 = targetAcc1
+                     .type(MediaType.APPLICATION_JSON_TYPE)
                     .delete(ClientResponse.class);
 
             System.out.println(response4.getStatus() + "");
@@ -51,6 +51,25 @@ public class DeleteClient {
             }
             
                // -----------------------------------------------------//
+
+//
+//            ClientResponse response2 = targetAcc1
+//                    .type(MediaType.APPLICATION_JSON_TYPE)
+//                    .delete(ClientResponse.class);
+//
+//            
+//            System.out.println("\n Customer 1, deleted account 1:");
+//                   
+//            if (response4.getStatus() == 200) {
+//                System.out.println("deleted: " + response4.getEntity(String.class));
+//
+//            } else if (response4.getStatus() == 304) {
+//                System.out.println("balance not 0 : not deleted");
+//            } else {
+//                System.out.println("not deleted");
+//            }
+            
+               // -----------------------------------------------------//
 //            ClientResponse response1 = targetAcc1
 //                    .queryParam("transaction", "1")
 //                    .queryParam("amount", "20.00")
@@ -59,8 +78,8 @@ public class DeleteClient {
 //
 //            System.out.println("\n Customer 1, account 1, lodgement:");
 //            System.out.println(response1.getEntity(String.class));
-//
-//            // -----------------------------------------------------//
+
+            // -----------------------------------------------------//
 //            ClientResponse response2 = targetAcc1
 //                    .type(MediaType.APPLICATION_JSON_TYPE)
 //                    .delete(ClientResponse.class);
@@ -69,25 +88,18 @@ public class DeleteClient {
 //            System.out.println("\n Customer 1, deleted account 1:");
 //
 //            if (response2.getStatus() == 200) {
-//                System.out.println("deleted: " + response1.getEntity(String.class));
+//                System.out.println("deleted: " + response2.getEntity(String.class));
 //
 //            } else if (response2.getStatus() == 304) {
 //                System.out.println("balance not 0 : not deleted");
 //            } else {
 //                System.out.println("not deleted");
 //            }
-//            // -----------------------------------------------------//
-//
-//            ClientResponse response3 = targetAcc1
-//                    .queryParam("transaction", "3")
-//                    .queryParam("amount", "20.00")
-//                    .type(MediaType.APPLICATION_JSON_TYPE)
-//                    .post(ClientResponse.class);
-//
-//            System.out.println("\n Customer 1, account 1, withdrawal:");
-//            System.out.println(response3.getEntity(String.class));
+            // -----------------------------------------------------//
 
-                        // -----------------------------------------------------//
+
+
+                       
 
             
         } catch (Exception e) {

@@ -111,7 +111,7 @@ public class TransactionClient {
            
         // transactions list//
              
-             ClientResponse response7 = target
+             ClientResponse response7 = targetAcc1
                     .type(MediaType.APPLICATION_JSON_TYPE)
                     .get(ClientResponse.class);
             
